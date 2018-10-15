@@ -1,16 +1,27 @@
+import os
 from astropy.io import fits
 from astroquery.gaia import Gaia
-
-QUERY = "SELECT ra, dec, pmra, pmra_error, pmdec, pmdec_error, parallax, parallax_error, \
-phot_g_mean_mag, bp_rp \
-FROM gaiadr2.gaia_source \
-WHERE CONTAINS(POINT('ICRS',gaiadr2.gaia_source.ra,gaiadr2.gaia_source.dec),\
-CIRCLE('ICRS',56.75,24.1167,2))=1 \
-AND phot_g_mean_mag<17;"
+import numpy as np
+import matplotlib.pyplot as plt
 
 
-def request_gaia_data(query=QUERY):
-    job = Gaia.launch_job_async(QUERY, dump_to_file=True, verbose=True)
+dirname = os.path.dirname(__file__)
+
+
+def generate_query(ra_centre, dec_centre, radius):
+    return f"""SELECT ra, dec, source_id, l, b, parallax, parallax_error,
+    pmra, pmra_error, pmdec, pmdec_error, ra_dec_corr, ra_parallax_corr,
+    ra_pmra_corr, ra_pmdec_corr, dec_parallax_corr, dec_pmra_corr,
+    dec_pmdec_corr, parallax_pmra_corr, parallax_pmdec_corr, pmra_pmdec_corr,
+    phot_g_n_obs, phot_g_mean_mag as g, bp_rp
+    FROM gaiadr2.gaia_source
+    WHERE CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',{ra_centre},{dec_centre},{radius}))=1
+    AND phot_g_mean_mag<17;"""
+
+
+def get_gaia_data(query):
+    """Launch a request of the query from the Gaia servers and return the results."""
+    job = Gaia.launch_job_async(query)
     return job.get_results()
 
 
