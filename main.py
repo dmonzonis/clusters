@@ -114,18 +114,69 @@ def get_unverified_cluster_data(identified_filename,
         query = generate_query(ra_centre, dec_centre, radius)
         results = get_gaia_data(query)
 
-        data_folder = os.path.join(dirname, 'gaia_data/')
-        if not os.path.exists(data_folder):
-            os.makedirs(data_folder)
-        results.write(data_folder + name + '.fits', overwrite=True)
-        make_plots(results, data_folder=data_folder, cluster_name=name)
+        if not os.path.exists(DATA_FOLDER):
+            os.makedirs(DATA_FOLDER)
+        results.write(DATA_FOLDER + name + '.fits', overwrite=True)
+        make_plots(results, data_folder=DATA_FOLDER, cluster_name=name)
 
     id_hdul.close()
     ver_hdul.close()
 
 
+def match_cluster(cluster_name, identified_filename):
+    """Returns the matching of Sampedro's data with GAIA's data.
+
+    The matches are returned in a list.
+    Each match has the format (idx, d2d, d3d), where idx is the index into GAIA's data
+    which corresponds to the closest object to each of the coordinates in Sampedro's data,
+    d2d is the on-sky distance between them, and d3d the 3D distance.
+    """
+    try:
+        cluster_hdul = fits.open(DATA_FOLDER + cluster_name + '.fits')
+    except FileNotFoundError:
+        print("Gaia data not found. Make sure to retrieve it first.")
+        return
+
+    id_hdul = fits.open(identified_filename)
+
+    cluster_ra = cluster_hdul[1].data['ra']
+    cluster_dec = cluster_hdul[1].data['dec']
+
+    # Get only the data for the relevant cluster
+    id_names = id_hdul[1].data['Cluster']
+    id_ra = id_hdul[1].data['RA_ICRS'][id_names == cluster_name]
+    id_dec = id_hdul[1].data['DE_ICRS'][id_names == cluster_name]
+
+    matches = []
+
+    gaia_star = SkyCoord(cluster_ra * u.deg, cluster_dec * u.deg, unit=(u.degree, u.degree))
+    sampedro_star = SkyCoord(id_ra, id_dec, unit=(u.degree, u.degree))
+    matches.append(sampedro_star.match_to_catalog_sky(gaia_star))
+
+    cluster_hdul.close()
+    id_hdul.close()
+
+    return matches
+
+
+def get_all_matches():
+    try:
+        with open('unverified_cluster_list.txt') as f:
+            clusters = [c.strip() for c in f.readlines()]
+    except FileNotFoundError:
+        print("Gaia data not found. Make sure to retrieve it first.")
+
+    for cluster in clusters:
+        print(f"Matching cluster {cluster}")
+        matches = match_cluster(cluster, "sampedro_stars.fits")
+        print(matches)
+        with open(DATA_FOLDER + cluster + '_match.dat', 'wb') as f:
+            pickle.dump(matches, f)
+
+
 def main():
-    get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
+    #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
+    get_all_matches()
 
 
 if __name__ == "__main__":
