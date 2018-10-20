@@ -1,11 +1,14 @@
 import os
+import pickle
+from astropy import units as u
+from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astroquery.gaia import Gaia
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-dirname = os.path.dirname(__file__)
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), 'gaia_data/')
 
 
 def generate_query(ra_centre, dec_centre, radius):
@@ -93,6 +96,11 @@ def get_unverified_cluster_data(identified_filename,
     ver_set = set(ver_name)  # Set of verified cluster names
     unver_set = {c for c in id_name
                  if c not in ver_set and c != "Melotte_111"}  # Melotte_111 is a well known cluster
+
+    # Save unverified cluster names to a text file for later use
+    with open('unverified_cluster_list.txt', 'w') as unver_file:
+        for name in unver_set:
+            unver_file.write(name + '\n')
 
     # Get data and plots for all the unverified clusters
     for name in unver_set:
