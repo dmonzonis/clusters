@@ -70,6 +70,8 @@ def make_plots(cluster_data, data_folder=None, cluster_name='Cluster'):
     else:
         plt.show()
 
+    plt.close()
+
 
 def get_unverified_cluster_data(identified_filename,
                                 verified_filename,
@@ -147,11 +149,9 @@ def match_cluster(cluster_name, identified_filename):
     id_ra = id_hdul[1].data['RA_ICRS'][id_names == cluster_name]
     id_dec = id_hdul[1].data['DE_ICRS'][id_names == cluster_name]
 
-    matches = []
-
     gaia_star = SkyCoord(cluster_ra * u.deg, cluster_dec * u.deg, unit=(u.degree, u.degree))
     sampedro_star = SkyCoord(id_ra, id_dec, unit=(u.degree, u.degree))
-    matches.append(sampedro_star.match_to_catalog_sky(gaia_star))
+    matches = sampedro_star.match_to_catalog_sky(gaia_star)
 
     cluster_hdul.close()
     id_hdul.close()
@@ -166,17 +166,105 @@ def get_all_matches():
     except FileNotFoundError:
         print("Gaia data not found. Make sure to retrieve it first.")
 
+    i = 1
+    total = len(clusters)
     for cluster in clusters:
-        print(f"Matching cluster {cluster}")
+        print(f"Matching cluster {cluster}. Cluster {i}/{total}.")
         matches = match_cluster(cluster, "sampedro_stars.fits")
-        print(matches)
         with open(DATA_FOLDER + cluster + '_match.dat', 'wb') as f:
             pickle.dump(matches, f)
+        i += 1
+
+
+def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize=(12, 12)):
+    with fits.open(DATA_FOLDER + cluster_name + '.fits') as hdul:
+        data = hdul[1].data
+
+    # Indices in the gaia data that correspond to
+    with open(DATA_FOLDER + cluster_name + '_match.dat', 'rb') as f:
+        indices = pickle.load(f)[0]
+
+    # Plot stuff
+    plt.figure(figsize=figsize)
+    plt.suptitle(cluster_name)
+
+    # (ra,dec)
+    plt.subplot(221)
+    # All stars by Gaia
+    plt.plot(data['ra'], data['dec'], '.', markersize=1, color='gray')
+    # Stars also in the Sampedro catalogue
+    plt.plot(data['ra'][indices], data['dec'][indices], '.', markersize=3, color='red')
+    plt.xlabel('ra')
+    plt.ylabel('dec')
+    plt.xlim(np.nanmin(data['ra']), np.nanmax(data['ra']))
+    plt.ylim(np.nanmin(data['dec']), np.nanmax(data['dec']))
+
+    # Plot all verified cluster positions to see if one ends up in the graphic, to match
+    # possible verified clusters which had different names in Sampedro's data
+    with fits.open(verified_filename) as hdul:
+        verified_data = hdul[1].data
+    plt.plot(verified_data['ra'], verified_data['dec'], 'yX', markersize=20)
+    # Add the names as labels
+    for i in range(len(verified_data['cluster'])):
+        xy = (verified_data['ra'][i], verified_data['dec'][i])
+        plt.annotate(verified_data['cluster'][i], xy, weight='bold')
+
+    # (pmra,pmdec)
+    plt.subplot(222)
+    # All stars by Gaia
+    plt.plot(data['pmra'], data['pmdec'], '.', markersize=1, color='gray')
+    # Stars also in the Sampedro catalogue
+    plt.plot(data['pmra'][indices], data['pmdec'][indices], '.', markersize=3, color='red')
+    plt.xlabel('pmra')
+    plt.ylabel('pmdec')
+    plt.xlim(np.nanmin(data['pmra'][indices]), np.nanmax(data['pmra'][indices]))
+    plt.ylim(np.nanmin(data['pmdec'][indices]), np.nanmax(data['pmdec'][indices]))
+
+    # (bp_rp,g)
+    plt.subplot(223)
+    # All stars by Gaia
+    plt.plot(data['bp_rp'], data['g'], '.', markersize=1, color='gray')
+    # Stars also in the Sampedro catalogue
+    plt.plot(data['bp_rp'][indices], data['g'][indices], '.', markersize=3, color='red')
+    plt.xlabel('BP-RP')
+    plt.ylabel('G')
+    plt.xlim(np.nanmin(data['bp_rp'][indices]), np.nanmax(data['bp_rp'][indices]))
+    plt.ylim(np.nanmin(data['g'][indices]), np.nanmax(data['g'][indices]))
+
+    # (parallax,g)
+    plt.subplot(224)
+    # All stars by Gaia
+    plt.plot(data['parallax'], data['g'], '.', markersize=1, color='gray')
+    # Stars also in the Sampedro catalogue
+    plt.plot(data['parallax'][indices], data['g'][indices], '.', markersize=3, color='red')
+    plt.xlabel('Parallax')
+    plt.ylabel('G')
+    plt.xlim(np.nanmin(data['parallax'][indices]), np.nanmax(data['parallax'][indices]))
+    plt.ylim(np.nanmin(data['g'][indices]), np.nanmax(data['g'][indices]))
+
+    plt.savefig(data_folder + cluster_name + '_matched_plot.png')
+    plt.close()
+
+
+def plot_all_matches():
+    try:
+        with open('unverified_cluster_list.txt') as f:
+            clusters = [c.strip() for c in f.readlines()]
+    except FileNotFoundError:
+        print("Gaia data not found. Make sure to retrieve it first.")
+
+    i = 1
+    total = len(clusters)
+    for cluster in clusters:
+        print(f"Plotting data of cluster {cluster}. Cluster {i}/{total}.")
+        plot_match(cluster, 'verified.fits')
+        i += 1
 
 
 def main():
     #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
-    get_all_matches()
+    #  get_all_matches()
+    plot_all_matches()
 
 
 if __name__ == "__main__":
