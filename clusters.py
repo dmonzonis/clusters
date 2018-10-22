@@ -219,6 +219,8 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     plt.plot(data['pmra'], data['pmdec'], '.', markersize=1, color='gray')
     # Stars also in the Sampedro catalogue
     plt.plot(data['pmra'][indices], data['pmdec'][indices], '.', markersize=3, color='red')
+    plt.errorbar(data['pmra'], data['pmdec'], xerr=data['pmra_error'], yerr=data['pmdec_error'],
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('pmra')
     plt.ylabel('pmdec')
     plt.xlim(-20, 20)
@@ -241,12 +243,15 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     plt.plot(data['parallax'], data['g'], '.', markersize=1, color='gray')
     # Stars also in the Sampedro catalogue
     plt.plot(data['parallax'][indices], data['g'][indices], '.', markersize=3, color='red')
+    plt.errorbar(data['parallax'], data['g'], xerr=data['parallax_error'],
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('Parallax')
     plt.ylabel('G')
     plt.xlim(0, np.nanmax(data['parallax'][indices]))
     plt.ylim(np.nanmin(data['g'][indices]), np.nanmax(data['g'][indices]))
 
-    plt.savefig(data_folder + cluster_name + '_matched_plot.png')
+    #  plt.savefig(data_folder + cluster_name + '_matched_plot.png')
+    plt.show()
     plt.close()
 
 
