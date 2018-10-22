@@ -86,17 +86,15 @@ def get_unverified_cluster_data(identified_filename,
     saved in the same directory.
     """
     # Data from the Sampedro file
-    id_hdul = fits.open(identified_filename)  # File with identified cluster data
-    id_ra = id_hdul[1].data['RA_ICRS']
-    id_dec = id_hdul[1].data['DE_ICRS']
-    id_name = id_hdul[1].data['Cluster']
+    with fits.open(identified_filename) as hdul:
+        id_data = hdul[1].data
 
     # Data from the verified cluster file
-    ver_hdul = fits.open(verified_filename)  # File with verified cluster data
-    ver_name = ver_hdul[1].data['cluster']
+    with fits.open(verified_filename) as hdul:
+        ver_data = hdul[1].data
 
-    ver_set = set(ver_name)  # Set of verified cluster names
-    unver_set = {c for c in id_name
+    ver_set = set(ver_data['cluster'])  # Set of verified cluster names
+    unver_set = {c for c in id_data['Cluster']
                  if c not in ver_set and c != "Melotte_111"}  # Melotte_111 is a well known cluster
 
     # Save unverified cluster names to a text file for later use
@@ -109,9 +107,12 @@ def get_unverified_cluster_data(identified_filename,
         print(f"Getting data for cluster {name}")
 
         # Find centre and size of the field corresponding to the cluster
-        ra_centre = np.mean([max(id_ra[id_name == name]), min(id_ra[id_name == name])])
-        dec_centre = np.mean([max(id_dec[id_name == name]), min(id_dec[id_name == name])])
-        radius = (max(id_dec[id_name == name]) - min(id_dec[id_name == name])) / 2.
+        ra_centre = np.mean([max(id_data['ra'][id_data['Cluster'] == name]),
+                             min(id_data['ra'][id_data['Cluster'] == name])])
+        dec_centre = np.mean([max(id_data['dec'][id_name == name]),
+                              min(id_data['dec'][id_data['Cluster'] == name])])
+        radius = (max(id_data['dec'][id_name == name]) -
+                  min(id_data['dec'][id_data['Cluster'] == name])) / 2.
 
         query = generate_query(ra_centre, dec_centre, radius)
         results = get_gaia_data(query)
@@ -120,9 +121,6 @@ def get_unverified_cluster_data(identified_filename,
             os.makedirs(DATA_FOLDER)
         results.write(DATA_FOLDER + name + '.fits', overwrite=True)
         make_plots(results, data_folder=DATA_FOLDER, cluster_name=name)
-
-    id_hdul.close()
-    ver_hdul.close()
 
 
 def match_cluster(cluster_name, identified_filename):
@@ -250,8 +248,7 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     plt.xlim(0, np.nanmax(data['parallax'][indices]))
     plt.ylim(np.nanmin(data['g'][indices]), np.nanmax(data['g'][indices]))
 
-    #  plt.savefig(data_folder + cluster_name + '_matched_plot.png')
-    plt.show()
+    plt.savefig(data_folder + cluster_name + '_matched_plot.png')
     plt.close()
 
 
@@ -272,7 +269,7 @@ def plot_all_matches():
 
 def main():
     #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
-    get_all_matches()
+    #  get_all_matches()
     plot_all_matches()
 
 
