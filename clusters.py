@@ -134,27 +134,31 @@ def match_cluster(cluster_name, identified_filename):
     d2d is the on-sky distance between them, and d3d the 3D distance.
     """
     try:
-        cluster_hdul = fits.open(DATA_FOLDER + cluster_name + '.fits')
+        with fits.open(DATA_FOLDER + cluster_name + '.fits') as hdul:
+            cluster_data = hdul[1].data
     except FileNotFoundError:
         print("Gaia data not found. Make sure to retrieve it first.")
         return
 
-    id_hdul = fits.open(identified_filename)
+    with fits.open(identified_filename) as hdul:
+        id_data = hdul[1].data
 
-    cluster_ra = cluster_hdul[1].data['ra']
-    cluster_dec = cluster_hdul[1].data['dec']
+    cluster_ra = cluster_data['ra']
+    cluster_dec = cluster_data['dec']
 
     # Get only the data for the relevant cluster
-    id_names = id_hdul[1].data['Cluster']
-    id_ra = id_hdul[1].data['RA_ICRS'][id_names == cluster_name]
-    id_dec = id_hdul[1].data['DE_ICRS'][id_names == cluster_name]
+    id_ra = id_data['RA_ICRS'][(id_data['Cluster'] == cluster_name) &
+                                       (id_data['ClassM1'] == 1) &
+                                       (id_data['ClassM2'] == 1) &
+                                       (id_data['ClassM3'] == 1)]
+    id_dec = id_data['DE_ICRS'][(id_data['Cluster'] == cluster_name) &
+                                       (id_data['ClassM1'] == 1) &
+                                       (id_data['ClassM2'] == 1) &
+                                       (id_data['ClassM3'] == 1)]
 
     gaia_star = SkyCoord(cluster_ra * u.deg, cluster_dec * u.deg, unit=(u.degree, u.degree))
     sampedro_star = SkyCoord(id_ra, id_dec, unit=(u.degree, u.degree))
     matches = sampedro_star.match_to_catalog_sky(gaia_star)
-
-    cluster_hdul.close()
-    id_hdul.close()
 
     return matches
 
@@ -263,7 +267,7 @@ def plot_all_matches():
 
 def main():
     #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
-    #  get_all_matches()
+    get_all_matches()
     plot_all_matches()
 
 
