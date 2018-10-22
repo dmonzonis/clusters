@@ -221,8 +221,8 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     plt.plot(data['pmra'][indices], data['pmdec'][indices], '.', markersize=3, color='red')
     plt.xlabel('pmra')
     plt.ylabel('pmdec')
-    plt.xlim(np.nanmin(data['pmra'][indices]), np.nanmax(data['pmra'][indices]))
-    plt.ylim(np.nanmin(data['pmdec'][indices]), np.nanmax(data['pmdec'][indices]))
+    plt.xlim(-20, 20)
+    plt.ylim(-20, 20)
 
     # (bp_rp,g)
     plt.subplot(223)
@@ -243,7 +243,7 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     plt.plot(data['parallax'][indices], data['g'][indices], '.', markersize=3, color='red')
     plt.xlabel('Parallax')
     plt.ylabel('G')
-    plt.xlim(np.nanmin(data['parallax'][indices]), np.nanmax(data['parallax'][indices]))
+    plt.xlim(0, np.nanmax(data['parallax'][indices]))
     plt.ylim(np.nanmin(data['g'][indices]), np.nanmax(data['g'][indices]))
 
     plt.savefig(data_folder + cluster_name + '_matched_plot.png')
