@@ -123,7 +123,7 @@ def get_unverified_cluster_data(identified_filename,
         make_plots(results, data_folder=DATA_FOLDER, cluster_name=name)
 
 
-def match_cluster(cluster_name, identified_filename, min_class_matches):
+def match_cluster(cluster_name, identified_filename):
     """Returns the matching of Sampedro's data with GAIA's data.
 
     The matches are returned in a list.
@@ -145,24 +145,34 @@ def match_cluster(cluster_name, identified_filename, min_class_matches):
     cluster_dec = cluster_data['dec']
 
     # Get the condition to filter the data
-    # TODO: Create a good condition to filter enough stars but not too many
-    condition = id_data['Cluster'] == cluster_name
-    if min_class_matches == 2:
-        subcondition = (id_data['ClassM1'] == 1) & (id_data['ClassM2'] == 1)
-        subcondition |= (id_data['ClassM1'] == 1) & (id_data['ClassM3'] == 1)
-        subcondition |= (id_data['ClassM2'] == 1) & (id_data['ClassM3'] == 1)
-        condition &= subcondition
-    elif min_class_matches == 3:
-        condition &= id_data['ClassM1'] == 1
-        condition &= id_data['ClassM2'] == 1
-        condition &= id_data['ClassM3'] == 1
-    else:
-        raise ValueError("Can only set to match the 3 classes or at least 2")
+    class1, class2, class3 = id_data['ClassM1'], id_data['ClassM2'], id_data['ClassM3']
+    id_ra = id_data['RA_ICRS'][id_data['Cluster'] == cluster_name]
+    print(f"Cluster has a total of {len(id_ra)} stars.")
+    # Only filter clusters with at least 50 stars
+    if (len(id_ra) < 50):
+        print(f"Cluster has only {len(id_ra)} stars. Skipping filtering.")
+        id_dec = id_data['DE_ICRS'][id_data['Cluster'] == cluster_name]
 
-    # Get only the data for the relevant cluster
-    id_ra = id_data['RA_ICRS'][condition]
-    print(len(id_ra))
-    id_dec = id_data['DE_ICRS'][condition]
+    else:
+        # Try restrictive filter: member of all 3 classes
+        condition = id_data['Cluster'] == cluster_name
+        condition &= ((class1 == 1) & (class2 == 1) & (class3 == 1))
+
+        id_ra = id_data['RA_ICRS'][condition]
+        print(f"Got {len(id_ra)} stars with restrictive condition.")
+        if (len(id_ra) < 50):
+            # Try less restrictive filter: member of at least 1 class
+            condition = id_data['Cluster'] == cluster_name
+            condition &= ((class1 == 1) | (class2 == 1) | (class3 == 1))
+            id_ra = id_data['RA_ICRS'][condition]
+            print(f"Got {len(id_ra)} stars with less restrictive condition.")
+            if len(id_ra) < 50:
+                # Filters give too little stars, so don't apply any filters after all
+                condition = id_data['Cluster'] == cluster_name
+                id_ra = id_data['RA_ICRS'][condition]
+                print(f"Got too little stars. Undoing filtering and getting all {len(id_ra)} stars.")
+
+        id_dec = id_data['DE_ICRS'][condition]
 
     gaia_star = SkyCoord(cluster_ra * u.deg, cluster_dec * u.deg, unit=(u.degree, u.degree))
     sampedro_star = SkyCoord(id_ra, id_dec, unit=(u.degree, u.degree))
@@ -171,7 +181,7 @@ def match_cluster(cluster_name, identified_filename, min_class_matches):
     return matches
 
 
-def get_all_matches(min_class_matches=2):
+def get_all_matches():
     try:
         with open('unverified_cluster_list.txt') as f:
             clusters = [c.strip() for c in f.readlines()]
@@ -182,9 +192,10 @@ def get_all_matches(min_class_matches=2):
     total = len(clusters)
     for cluster in clusters:
         print(f"Matching cluster {cluster}. Cluster {i}/{total}.")
-        matches = match_cluster(cluster, "sampedro_stars.fits", min_class_matches)
+        matches = match_cluster(cluster, "sampedro_stars.fits")
         with open(DATA_FOLDER + cluster + '_match.dat', 'wb') as f:
             pickle.dump(matches, f)
+        print()
         i += 1
 
 
@@ -285,7 +296,7 @@ def plot_all_matches():
 
 def main():
     #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
-    get_all_matches(2)
+    get_all_matches()
     plot_all_matches()
 
 
