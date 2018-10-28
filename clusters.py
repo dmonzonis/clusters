@@ -123,7 +123,7 @@ def get_unverified_cluster_data(identified_filename,
         make_plots(results, data_folder=DATA_FOLDER, cluster_name=name)
 
 
-def match_cluster(cluster_name, identified_filename):
+def match_cluster(cluster_name, identified_filename, min_class_matches):
     """Returns the matching of Sampedro's data with GAIA's data.
 
     The matches are returned in a list.
@@ -144,15 +144,25 @@ def match_cluster(cluster_name, identified_filename):
     cluster_ra = cluster_data['ra']
     cluster_dec = cluster_data['dec']
 
+    # Get the condition to filter the data
+    # TODO: Create a good condition to filter enough stars but not too many
+    condition = id_data['Cluster'] == cluster_name
+    if min_class_matches == 2:
+        subcondition = (id_data['ClassM1'] == 1) & (id_data['ClassM2'] == 1)
+        subcondition |= (id_data['ClassM1'] == 1) & (id_data['ClassM3'] == 1)
+        subcondition |= (id_data['ClassM2'] == 1) & (id_data['ClassM3'] == 1)
+        condition &= subcondition
+    elif min_class_matches == 3:
+        condition &= id_data['ClassM1'] == 1
+        condition &= id_data['ClassM2'] == 1
+        condition &= id_data['ClassM3'] == 1
+    else:
+        raise ValueError("Can only set to match the 3 classes or at least 2")
+
     # Get only the data for the relevant cluster
-    id_ra = id_data['RA_ICRS'][(id_data['Cluster'] == cluster_name) &
-                                       (id_data['ClassM1'] == 1) &
-                                       (id_data['ClassM2'] == 1) &
-                                       (id_data['ClassM3'] == 1)]
-    id_dec = id_data['DE_ICRS'][(id_data['Cluster'] == cluster_name) &
-                                       (id_data['ClassM1'] == 1) &
-                                       (id_data['ClassM2'] == 1) &
-                                       (id_data['ClassM3'] == 1)]
+    id_ra = id_data['RA_ICRS'][condition]
+    print(len(id_ra))
+    id_dec = id_data['DE_ICRS'][condition]
 
     gaia_star = SkyCoord(cluster_ra * u.deg, cluster_dec * u.deg, unit=(u.degree, u.degree))
     sampedro_star = SkyCoord(id_ra, id_dec, unit=(u.degree, u.degree))
@@ -161,7 +171,7 @@ def match_cluster(cluster_name, identified_filename):
     return matches
 
 
-def get_all_matches():
+def get_all_matches(min_class_matches=2):
     try:
         with open('unverified_cluster_list.txt') as f:
             clusters = [c.strip() for c in f.readlines()]
@@ -172,7 +182,7 @@ def get_all_matches():
     total = len(clusters)
     for cluster in clusters:
         print(f"Matching cluster {cluster}. Cluster {i}/{total}.")
-        matches = match_cluster(cluster, "sampedro_stars.fits")
+        matches = match_cluster(cluster, "sampedro_stars.fits", min_class_matches)
         with open(DATA_FOLDER + cluster + '_match.dat', 'wb') as f:
             pickle.dump(matches, f)
         i += 1
@@ -185,6 +195,12 @@ def plot_match(cluster_name, verified_filename, data_folder=DATA_FOLDER, figsize
     # Indices in the gaia data that correspond to
     with open(DATA_FOLDER + cluster_name + '_match.dat', 'rb') as f:
         indices = pickle.load(f)[0]
+
+    if len(indices) == 0:
+        print("No matches for cluster", cluster_name)
+        with open('fail.txt', 'a') as err:
+            err.write(cluster_name + '\n')
+        return
 
     # Plot stuff
     plt.figure(figsize=figsize)
@@ -269,7 +285,7 @@ def plot_all_matches():
 
 def main():
     #  get_unverified_cluster_data('sampedro_stars.fits', 'verified.fits')
-    #  get_all_matches()
+    get_all_matches(2)
     plot_all_matches()
 
 
