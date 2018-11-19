@@ -1,9 +1,9 @@
 import argparse
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
-
 
 
 def load_isochrones(extinction='0.0'):
@@ -69,12 +69,18 @@ def main():
                         help="distance modulus", required=True)
     parser.add_argument('-a', '--age', type=float,
                         help="log of the age of the isochrone to plot", required=True)
+    parser.add_argument('-s', '--save', action='store_true',
+                        help="save plot to file")
     args = parser.parse_args()
 
     # Plot data and isochrone
     create_plot(args.f.name)
     plot_isochrone(args.extinction, args.distance, args.age)
-    plt.show()
+
+    if args.save:
+        plt.savefig(os.path.splitext(args.f.name)[0] + '.png')
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
