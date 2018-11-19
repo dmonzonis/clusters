@@ -42,7 +42,7 @@ def create_plot(data_filename):
         data_filename: Name of the file with the star data
     """
     # Set up plot figure
-    plt.figure()
+    plt.figure(figsize=(12, 8))
     # TODO: Use better plot title
     plt.title(data_filename)
     plt.xlim(0, 3)
