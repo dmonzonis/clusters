@@ -4,9 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
 
-font = {'family': 'serif',
-        'size': 10}
-rc('font', **font)
 
 
 def load_isochrones(extinction='0.0'):
@@ -57,6 +54,12 @@ def create_plot(data_filename):
 
 
 def main():
+    # Define font for plots
+    font = {'family': 'serif',
+            'size': 10}
+    rc('font', **font)
+
+    # Create argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', type=argparse.FileType('r'),
                         help="star data file", required=True)
@@ -68,9 +71,9 @@ def main():
                         help="log of the age of the isochrone to plot", required=True)
     args = parser.parse_args()
 
+    # Plot data and isochrone
     create_plot(args.f.name)
     plot_isochrone(args.extinction, args.distance, args.age)
-
     plt.show()
 
 
