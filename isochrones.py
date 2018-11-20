@@ -15,7 +15,8 @@ def load_isochrones(extinction='0.0'):
 
 def load_star_data(filename):
     """Return the data in cols 23 and 24, assumed to be g and bprp"""
-    return np.loadtxt(filename, usecols=(23, 24), delimiter=',', unpack=True)
+    #  return np.loadtxt(filename, usecols=(23, 24), unpack=True)
+    return np.genfromtxt(filename, usecols=(23, 24), unpack=True)
 
 
 def plot_isochrone(extinction, distance_modulus, age):
