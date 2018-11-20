@@ -15,7 +15,7 @@ def load_isochrones(extinction='0.0'):
 
 def load_star_data(filename):
     """Return the data in cols 23 and 24, assumed to be g and bprp"""
-    return np.loadtxt(filename, usecols=(23, 24), unpack=True)
+    return np.loadtxt(filename, usecols=(23, 24), delimiter=',', unpack=True)
 
 
 def plot_isochrone(extinction, distance_modulus, age):
@@ -28,8 +28,9 @@ def plot_isochrone(extinction, distance_modulus, age):
     """
     logti, gi, bprpi = load_isochrones(extinction)
     # TODO: Add label
+    age_in_gyr = "{0:.5f}".format(10**age / 10**9)
     plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
-             'r-')
+             'r-', label=f'{age_in_gyr} Gyr, Av={extinction}, dM={distance_modulus}')
 
 
 def create_plot(data_filename):
@@ -76,6 +77,9 @@ def main():
     # Plot data and isochrone
     create_plot(args.f.name)
     plot_isochrone(args.extinction, args.distance, args.age)
+
+    # Add legends
+    plt.legend()
 
     if args.save:
         plt.savefig(os.path.splitext(args.f.name)[0] + '.png')
