@@ -14,12 +14,11 @@ def load_isochrones(extinction='0.0'):
 
 
 def load_star_data(filename):
-    """Return the data in cols 23 and 24, assumed to be g and bprp"""
-    #  return np.loadtxt(filename, usecols=(23, 24), unpack=True)
-    return np.genfromtxt(filename, usecols=(23, 24), unpack=True)
+    """Return the data in cols 5, 23 and 24, assumed to be parallax, g and bprp"""
+    return np.genfromtxt(filename, usecols=(5, 23, 24), unpack=True)
 
 
-def plot_isochrone(extinction, distance_modulus, age):
+def plot_isochrone(extinction, age, distance_modulus=None):
     """Plots an isochrone on top of the star data.
 
     Args:
@@ -30,11 +29,17 @@ def plot_isochrone(extinction, distance_modulus, age):
     logti, gi, bprpi = load_isochrones(extinction)
     # TODO: Add label
     age_in_gyr = "{0:.5f}".format(10**age / 10**9)
-    plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
-             'r-', label=f'{age_in_gyr} Gyr, Av={extinction}, dM={distance_modulus}')
+    if distance_modulus is None:
+        # Distance modulus precalculated for every star
+        plt.plot(bprpi[logti == age], gi[logti == age],
+                 'r-', label=f'{age_in_gyr} Gyr, Av={extinction}')
+    else:
+        # Use the provided distance modulus for all stars
+        plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
+                 'r-', label=f'{age_in_gyr} Gyr, Av={extinction}, dM={distance_modulus}')
 
 
-def create_plot(data_filename):
+def create_plot(data_filename, shift_distance=True):
     """Create a scatter plot with the star data and return it.
 
     Args:
@@ -51,8 +56,12 @@ def create_plot(data_filename):
     plt.minorticks_on()
     plt.tight_layout()
     # Load and plot the data
-    g, bprp = load_star_data(data_filename)
-    plt.scatter(bprp, g)
+    parallax, g, bprp = load_star_data(data_filename)
+    if shift_distance:
+        distance_modulus = 5 * np.log10(1. / (parallax / 1000.)) - 5
+        plt.scatter(bprp, g - distance_modulus)
+    else:
+        plt.scatter(bprp, g)
 
 
 def main():
@@ -68,7 +77,7 @@ def main():
     parser.add_argument('-e', '--extinction', type=str,
                         help="degree of extinction", required=True)
     parser.add_argument('-d', '--distance', type=float,
-                        help="distance modulus", required=True)
+                        help="distance modulus")
     parser.add_argument('-a', '--age', type=float,
                         help="log of the age of the isochrone to plot", required=True)
     parser.add_argument('-s', '--save', action='store_true',
@@ -76,8 +85,12 @@ def main():
     args = parser.parse_args()
 
     # Plot data and isochrone
-    create_plot(args.f.name)
-    plot_isochrone(args.extinction, args.distance, args.age)
+    if not args.distance:
+        create_plot(args.f.name, shift_distance=True)
+        plot_isochrone(args.extinction, args.age)
+    else:
+        create_plot(args.f.name, shift_distance=False)
+        plot_isochrone(args.extinction, args.age, args.distance)
 
     # Add legends
     plt.legend()
