@@ -27,7 +27,6 @@ def plot_isochrone(extinction, age, distance_modulus=None):
         age: log of the age of the isochrone to plot
     """
     logti, gi, bprpi = load_isochrones(extinction)
-    # TODO: Add label
     age_in_gyr = "{0:.5f}".format(10**age / 10**9)
     if distance_modulus is None:
         # Distance modulus precalculated for every star
