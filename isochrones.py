@@ -30,6 +30,7 @@ def plot_isochrone(extinction, age, distance_modulus=None):
     age_in_gyr = "{0:.5f}".format(10**age / 10**9)
     if distance_modulus is None:
         # Distance modulus precalculated for every star
+        # TODO: Add distance modulus average on label
         plt.plot(bprpi[logti == age], gi[logti == age],
                  'r-', label=f'{age_in_gyr} Gyr, Av={extinction}')
     else:
@@ -57,6 +58,7 @@ def create_plot(data_filename, shift_distance=True):
     # Load and plot the data
     parallax, g, bprp = load_star_data(data_filename)
     if shift_distance:
+        # TODO: Shift isochrone, not data points!
         distance_modulus = 5 * np.log10(1. / (parallax / 1000.)) - 5
         plt.scatter(bprp, g - distance_modulus)
     else:
