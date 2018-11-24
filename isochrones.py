@@ -1,6 +1,7 @@
 import argparse
 import os
 
+from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -15,7 +16,15 @@ def load_isochrones(extinction='0.0'):
 
 def load_star_data(filename):
     """Return the data in cols 5, 23 and 24, assumed to be parallax, g and bprp"""
-    return np.genfromtxt(filename, usecols=(5, 23, 24), unpack=True)
+    ext = os.path.splitext(filename)[-1]
+    if ext == '.fits':
+        # Fits file
+        with fits.open(filename) as hdul:
+            data = hdul[1].data
+        return data['parallax'], data['g'], data['bp_rp']
+    else:
+        # ASCII file
+        return np.genfromtxt(filename, usecols=(5, 23, 24), unpack=True)
 
 
 def plot_isochrone(extinction, age, distance_modulus=None):
