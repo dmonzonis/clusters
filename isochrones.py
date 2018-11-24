@@ -4,6 +4,8 @@ import os
 from astropy.io import fits
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
+import matplotlib.cm as cmx
 from matplotlib import rc
 
 
@@ -32,7 +34,7 @@ def load_star_data(filename):
     return np.mean(parallax), g, bp_rp
 
 
-def plot_isochrone(extinction, age, distance_modulus):
+def plot_isochrone(extinction, age, distance_modulus, color):
     """Plots an isochrone on top of the star data.
 
     Args:
@@ -44,7 +46,21 @@ def plot_isochrone(extinction, age, distance_modulus):
     age_in_gyr_label = "{0:.5f}".format(10**age / 10**9)
     distance_modulus_label = "{0:.5f}".format(distance_modulus)
     plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
-             'r-', label=f'{age_in_gyr_label} Gyr, Av={extinction}, dM={distance_modulus_label}')
+             'r-', label=f'{age_in_gyr_label} Gyr, Av={extinction}, dM={distance_modulus_label}',
+             color=color)
+
+
+def plot_multiple_isochrones(extinction, age_array, distance_modulus):
+    """Plot all isochrones in age_array."""
+    colormap = plt.cm.get_cmap('rainbow')
+    cnorm = colors.Normalize(vmin=7, vmax=9.5)
+    scalar_map = cmx.ScalarMappable(norm=cnorm, cmap=colormap)
+    scalar_map.set_array(age_array)
+    for age in age_array:
+        color = scalar_map.to_rgba(age)
+        plot_isochrone(extinction, age, distance_modulus, color)
+    if len(age_array) > 1:
+        plt.colorbar(scalar_map, label="logt")
 
 
 def plot_star_data(g, bprp, name):
@@ -62,7 +78,7 @@ def plot_star_data(g, bprp, name):
     plt.minorticks_on()
     plt.tight_layout()
     # Plot the data
-    plt.scatter(bprp, g, marker='.', color='black')
+    plt.scatter(bprp, g, color='black')
 
 
 def main():
@@ -79,7 +95,7 @@ def main():
                         help="degree of extinction", required=True)
     parser.add_argument('-d', '--distance', type=float,
                         help="distance modulus")
-    parser.add_argument('-a', '--age', type=float,
+    parser.add_argument('-a', '--age', type=float, nargs='+',
                         help="log of the age of the isochrone to plot", required=True)
     parser.add_argument('-s', '--save', action='store_true',
                         help="save plot to file")
@@ -100,10 +116,10 @@ def main():
     # Plot data and isochrone
     if not args.distance:
         plot_star_data(g, bprp, name)
-        plot_isochrone(args.extinction, args.age, distance_modulus)
+        plot_multiple_isochrones(args.extinction, args.age, distance_modulus)
     else:
         plot_star_data(g, bprp, name)
-        plot_isochrone(args.extinction, args.age, args.distance)
+        plot_multiple_isochrones(args.extinction, args.age, distance_modulus)
 
     # Add legends
     plt.legend()
