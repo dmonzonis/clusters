@@ -15,16 +15,17 @@ def load_isochrones(extinction='0.0'):
 
 
 def load_star_data(filename):
-    """Return the data in cols 5, 23 and 24, assumed to be parallax, g and bprp"""
+    """Return the mean parallax, g and bp-rp of the stars in the data file."""
     ext = os.path.splitext(filename)[-1]
     if ext == '.fits':
         # Fits file
         with fits.open(filename) as hdul:
             data = hdul[1].data
-        return data['parallax'], data['g'], data['bp_rp']
+        parallax, g, bp_rp = data['parallax'], data['g'], data['bp_rp']
     else:
         # ASCII file
-        return np.genfromtxt(filename, usecols=(5, 23, 24), unpack=True)
+        parallax, g, bp_rp = np.genfromtxt(filename, usecols=(5, 23, 24), unpack=True)
+    return np.mean(parallax), g, bp_rp
 
 
 def plot_isochrone(extinction, age, distance_modulus=None):
@@ -65,10 +66,10 @@ def create_plot(data_filename, shift_distance=True):
     plt.minorticks_on()
     plt.tight_layout()
     # Load and plot the data
-    parallax, g, bprp = load_star_data(data_filename)
+    mean_parallax, g, bprp = load_star_data(data_filename)
     if shift_distance:
         # TODO: Shift isochrone, not data points!
-        distance_modulus = 5 * np.log10(1. / (parallax / 1000.)) - 5
+        distance_modulus = 5 * np.log10(1. / (mean_parallax / 1000.)) - 5
         plt.scatter(bprp, g - distance_modulus)
     else:
         plt.scatter(bprp, g)
