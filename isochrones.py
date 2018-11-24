@@ -49,24 +49,21 @@ def plot_isochrone(extinction, age, distance_modulus=None):
                  'r-', label=f'{age_in_gyr} Gyr, Av={extinction}, dM={distance_modulus}')
 
 
-def create_plot(data_filename, shift_distance=True):
+def plot_star_data(mean_parallax, g, bprp, name, shift_distance=True):
     """Create a scatter plot with the star data and return it.
 
     Args:
         data_filename: Name of the file with the star data
     """
-    # Set up plot figure
-    plt.figure(figsize=(12, 8))
     # TODO: Use better plot title
-    plt.title(data_filename)
+    plt.title(name)
     plt.xlim(0, 3)
     plt.ylim(18, 4)
     plt.xlabel('BP-RP')
     plt.ylabel('G')
     plt.minorticks_on()
     plt.tight_layout()
-    # Load and plot the data
-    mean_parallax, g, bprp = load_star_data(data_filename)
+    # Plot the data
     if shift_distance:
         # TODO: Shift isochrone, not data points!
         distance_modulus = 5 * np.log10(1. / (mean_parallax / 1000.)) - 5
@@ -95,19 +92,26 @@ def main():
                         help="save plot to file")
     args = parser.parse_args()
 
+    # Load star data
+    filename = args.f.name
+    mean_parallax, g, bprp = load_star_data(filename)
+
+    # Create plot figure
+    plt.figure(figsize=(12, 8))
+
     # Plot data and isochrone
     if not args.distance:
-        create_plot(args.f.name, shift_distance=True)
+        plot_star_data(mean_parallax, g, bprp, filename, shift_distance=True)
         plot_isochrone(args.extinction, args.age)
     else:
-        create_plot(args.f.name, shift_distance=False)
+        plot_star_data(mean_parallax, g, bprp, filename, shift_distance=False)
         plot_isochrone(args.extinction, args.age, args.distance)
 
     # Add legends
     plt.legend()
 
     if args.save:
-        plt.savefig(os.path.splitext(args.f.name)[0] + '.png')
+        plt.savefig(os.path.splitext(filename)[0] + '.png')
     else:
         plt.show()
 
