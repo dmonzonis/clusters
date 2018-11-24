@@ -62,7 +62,7 @@ def plot_star_data(g, bprp, name):
     plt.minorticks_on()
     plt.tight_layout()
     # Plot the data
-    plt.scatter(bprp, g)
+    plt.scatter(bprp, g, marker='.', color='black')
 
 
 def main():
