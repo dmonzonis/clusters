@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 
 
+def compute_distance_modulus(parallax):
+    return 5 * np.log10(1. / (parallax / 1000.)) - 5
+
+
 def load_isochrones(extinction='0.0'):
     """Return (logt, b, bprp) for the isochrone with the given Av"""
     filename = f'Av_{extinction}.dat'
@@ -28,7 +32,7 @@ def load_star_data(filename):
     return np.mean(parallax), g, bp_rp
 
 
-def plot_isochrone(extinction, age, distance_modulus=None):
+def plot_isochrone(extinction, age, distance_modulus):
     """Plots an isochrone on top of the star data.
 
     Args:
@@ -37,19 +41,13 @@ def plot_isochrone(extinction, age, distance_modulus=None):
         age: log of the age of the isochrone to plot
     """
     logti, gi, bprpi = load_isochrones(extinction)
-    age_in_gyr = "{0:.5f}".format(10**age / 10**9)
-    if distance_modulus is None:
-        # Distance modulus precalculated for every star
-        # TODO: Add distance modulus average on label
-        plt.plot(bprpi[logti == age], gi[logti == age],
-                 'r-', label=f'{age_in_gyr} Gyr, Av={extinction}')
-    else:
-        # Use the provided distance modulus for all stars
-        plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
-                 'r-', label=f'{age_in_gyr} Gyr, Av={extinction}, dM={distance_modulus}')
+    age_in_gyr_label = "{0:.5f}".format(10**age / 10**9)
+    distance_modulus_label = "{0:.5f}".format(distance_modulus)
+    plt.plot(bprpi[logti == age], gi[logti == age] + distance_modulus,
+             'r-', label=f'{age_in_gyr_label} Gyr, Av={extinction}, dM={distance_modulus_label}')
 
 
-def plot_star_data(mean_parallax, g, bprp, name, shift_distance=True):
+def plot_star_data(g, bprp, name):
     """Create a scatter plot with the star data and return it.
 
     Args:
@@ -64,12 +62,7 @@ def plot_star_data(mean_parallax, g, bprp, name, shift_distance=True):
     plt.minorticks_on()
     plt.tight_layout()
     # Plot the data
-    if shift_distance:
-        # TODO: Shift isochrone, not data points!
-        distance_modulus = 5 * np.log10(1. / (mean_parallax / 1000.)) - 5
-        plt.scatter(bprp, g - distance_modulus)
-    else:
-        plt.scatter(bprp, g)
+    plt.scatter(bprp, g)
 
 
 def main():
@@ -95,16 +88,17 @@ def main():
     # Load star data
     filename = args.f.name
     mean_parallax, g, bprp = load_star_data(filename)
+    distance_modulus = compute_distance_modulus(mean_parallax)
 
     # Create plot figure
     plt.figure(figsize=(12, 8))
 
     # Plot data and isochrone
     if not args.distance:
-        plot_star_data(mean_parallax, g, bprp, filename, shift_distance=True)
-        plot_isochrone(args.extinction, args.age)
+        plot_star_data(g, bprp, filename)
+        plot_isochrone(args.extinction, args.age, distance_modulus)
     else:
-        plot_star_data(mean_parallax, g, bprp, filename, shift_distance=False)
+        plot_star_data(g, bprp, filename)
         plot_isochrone(args.extinction, args.age, args.distance)
 
     # Add legends
