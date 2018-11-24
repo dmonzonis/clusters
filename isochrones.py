@@ -53,7 +53,7 @@ def plot_isochrone(extinction, age, distance_modulus, color):
 def plot_multiple_isochrones(extinction, age_array, distance_modulus):
     """Plot all isochrones in age_array."""
     colormap = plt.cm.get_cmap('rainbow')
-    cnorm = colors.Normalize(vmin=7, vmax=9.5)
+    cnorm = colors.Normalize(vmin=7, vmax=10)
     scalar_map = cmx.ScalarMappable(norm=cnorm, cmap=colormap)
     scalar_map.set_array(age_array)
     for age in age_array:
