@@ -53,7 +53,6 @@ def plot_star_data(g, bprp, name):
     Args:
         data_filename: Name of the file with the star data
     """
-    # TODO: Use better plot title
     plt.title(name)
     plt.xlim(0, 3)
     plt.ylim(18, 4)
@@ -83,10 +82,14 @@ def main():
                         help="log of the age of the isochrone to plot", required=True)
     parser.add_argument('-s', '--save', action='store_true',
                         help="save plot to file")
+    parser.add_argument('-n', '--name', type=str,
+                        help="name of the cluster shown on the plot")
     args = parser.parse_args()
 
     # Load star data
     filename = args.f.name
+    name = args.name if args.name else os.path.splitext(filename)[0]
+
     mean_parallax, g, bprp = load_star_data(filename)
     distance_modulus = compute_distance_modulus(mean_parallax)
 
@@ -95,17 +98,17 @@ def main():
 
     # Plot data and isochrone
     if not args.distance:
-        plot_star_data(g, bprp, filename)
+        plot_star_data(g, bprp, name)
         plot_isochrone(args.extinction, args.age, distance_modulus)
     else:
-        plot_star_data(g, bprp, filename)
+        plot_star_data(g, bprp, name)
         plot_isochrone(args.extinction, args.age, args.distance)
 
     # Add legends
     plt.legend()
 
     if args.save:
-        plt.savefig(os.path.splitext(filename)[0] + '.png')
+        plt.savefig(name + '.png')
     else:
         plt.show()
 
