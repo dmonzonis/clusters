@@ -54,8 +54,9 @@ def plot_star_data(g, bprp, name):
         data_filename: Name of the file with the star data
     """
     plt.title(name)
-    plt.xlim(0, 3)
-    plt.ylim(18, 4)
+    xmargin, ymargin = 0.1, 0.2
+    plt.xlim(np.nanmin(bprp) - xmargin, np.nanmax(bprp) + xmargin)
+    plt.ylim(np.nanmax(g) + ymargin, np.nanmin(g) - ymargin)
     plt.xlabel('BP-RP')
     plt.ylabel('G')
     plt.minorticks_on()
