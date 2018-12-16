@@ -25,7 +25,7 @@ def plot_positions(ppxml_data, gaia_data):
     plt.xlabel('ra')
     plt.ylabel('dec')
 
-    # Gaia DR2
+    # Gaia DR2 (filtering by G <= 19)
     plt.subplot(122)
     plt.plot(gaia_data[0], gaia_data[2], 'k.')
     plt.xlabel('ra')
