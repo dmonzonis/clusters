@@ -21,13 +21,20 @@ def plot_positions(ppxml_data, gaia_data):
 
     # PPMXL
     plt.subplot(121)
-    plt.plot(ppxml_data['raj2000'], ppxml_data['dej2000'], 'k.')
+    plt.plot(ppxml_data['raj2000'], ppxml_data['dej2000'], 'k.', markersize=4)
+    plt.errorbar(ppxml_data['raj2000'], ppxml_data['dej2000'],
+                 xerr=ppxml_data['e_raepRA'], yerr=ppxml_data['e_deepDE'],
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('ra')
     plt.ylabel('dec')
 
     # Gaia DR2 (filtering by G <= 19)
     plt.subplot(122)
-    plt.plot(gaia_data[0], gaia_data[2], 'k.')
+    plt.plot(gaia_data[0], gaia_data[2], 'k.', markersize=4)
+    # ra and dec errors are in mas, not deg
+    plt.errorbar(gaia_data[0], gaia_data[2],
+                 xerr=gaia_data[1] / DEG_TO_MAS, yerr=gaia_data[3] / DEG_TO_MAS,
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('ra')
     plt.ylabel('dec')
 
@@ -44,7 +51,10 @@ def plot_motions(ppxml_data, gaia_data):
 
     # PPMXL
     plt.subplot(121)
-    plt.plot(ppxml_data['pmRA'], ppxml_data['pmDE'], 'k.')
+    plt.plot(ppxml_data['pmRA'], ppxml_data['pmDE'], 'k.', markersize=4)
+    plt.errorbar(ppxml_data['pmRA'], ppxml_data['pmDE'],
+                 xerr=ppxml_data['e_pmRA'], yerr=ppxml_data['e_pmDE'],
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('pmra')
     plt.ylabel('pmdec')
     plt.xlim(-0.00001, 0.00001)
@@ -53,7 +63,10 @@ def plot_motions(ppxml_data, gaia_data):
     # Gaia DR2
     plt.subplot(122)
     # In Gaia DR2, pmra and pmdec is given in mas/yr, so convert it to deg/yr
-    plt.plot(gaia_data[4] / DEG_TO_MAS, gaia_data[6] / DEG_TO_MAS, 'k.')
+    plt.plot(gaia_data[4] / DEG_TO_MAS, gaia_data[6] / DEG_TO_MAS, 'k.', markersize=4)
+    plt.errorbar(gaia_data[4] / DEG_TO_MAS, gaia_data[6] / DEG_TO_MAS,
+                 xerr=gaia_data[5] / DEG_TO_MAS, yerr=gaia_data[7] / DEG_TO_MAS,
+                 linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('pmra')
     plt.ylabel('pmdec')
     plt.xlim(-0.00001, 0.00001)
