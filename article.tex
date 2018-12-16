@@ -1,0 +1,92 @@
+\documentclass[twocolumn]{revtex4}
+
+\usepackage{graphicx,epsfig}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fancyhdr}
+\usepackage{siunitx}
+
+
+\begin{document}
+
+\pagestyle{fancy}
+\lhead{\bf TITLE}
+\rhead{Daniel Monzonís Laparra}
+\lfoot{Treball de Fi de Grau}
+\rfoot{Barcelona, January 2018}
+
+
+\title{Verifying open clusters using the Gaia catalogue}
+\author{Author: Daniel Monzonís Laparra}
+\affiliation{Facultat de Física, Universitat de Barcelona, Diagonal
+645, 08028 Barcelona, Spain.}
+\author{Advisor: Tristan Cantat-Gaudin}
+%\date{\today}
+
+\begin{abstract}
+{\bf Abstract:} Abstract goes here.
+\end{abstract}
+
+\maketitle
+
+%\tableofcontents
+
+
+\section{Introduction}
+Open clusters are groups of stars formed from the same molecular cloud simultaneously, and therefore the stars in the cluster share many properties like age, position, proper motion and composition. Because of this, many of these properties can be estimated much more easily from a cluster than from a single star. This information can then be used to trace the structure of the Milky Way, and makes open clusters very interesting for studying stellar evolution and stellar structure, since the only parameter that varies is the mass of each star.
+
+With the new release of data from Gaia, we can study open clusters with more precision than ever before. This data includes positions in the sky, proper motions, parallaxes, and magnitudes in three different photometric filters for over 1 billion stars.
+
+In this article we attempt to verify the existence of some open clusters previously identified from less precise sources using the data from Gaia, and also estimate the age and the interstellar extinction of some of the open clusters via isochrone fitting.
+
+\section{The Gaia DR2 catalogue}
+The second release of data from Gaia\cite{gaiadr2} introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for a total of $1 692 919 135$ sources. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
+
+For bright stars ($G < 15$) the uncertainty in the positions and parallax is about $0.02-0.04\ \si{mas}$, and the uncertainty in the proper motions is about $0.07 \si{mas.yr^{-1}}$. We will only be working with stars of at most $G = 17$, for which the uncertainty in the positions and parallax is of $0.1 \si{mas}$ and of $0.2 \si{mas.yr^{-1}}$ in the proper motions.
+
+The catalogue also lists valuable information on the photometry of most of its sources on the $G$, $G_{BP}$ and $G_{RP}$ photometric passbands. This information will be very useful when determining the age of the clusters we will study, by using a colour-magnitude diagram.
+
+\section{Identifying open clusters}
+Using the data from the UCAC4 catalogue, Sampedro et al.\cite{sampedro} reported the existence of 1876 open clusters, using three different membership methods. With the release of the Gaia DR2 catalogue, which contains more precise stellar data, it is now possible to find and verify the existence of clusters more accurately. We are interested in verifying the existence of some of the clusters found in the study using this data.
+
+There have already been attempts to identify open clusters using the Gaia DR2 catalogue, for instance, in the study of Cantat-Gaudin et al.\cite{cantat-gaudin}, 1269 clusters have been identified with the new data. Our first goal will be to crossmatch the data from both studies to find the clusters that haven't already been verified.
+
+\subsection{Crossmatching data}
+As a first measure to reduce the number of clusters that need to be verified, we will only check the clusters whose name is not present in the data from both studies. We end up with a list of 890 clusters, due mainly to naming inconsistencies and to the new study possibly missing some clusters found by the old one.
+
+For each of these 890 clusters, we compute the mean right ascension and declination, which we will use as the center point of a circle with radius $\dfrac{\max(D) - \min(D)}{2}$ where $D$ is the set of declinations of each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G$ such that $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are supposedly part of the open cluster.
+
+
+
+
+\section{Determining the age and interstellar extinction of the cluster}
+Talk about isochrone fitting, show some plots...
+
+\section{Problems when fitting isochrones}
+\subsection{Blue stragglers}
+Talk about blue stragglers, show some plots where they clearly appear...
+
+\subsection{Binary sequences}
+Talk about binary sequences due to binary stars.
+
+\subsection{Differential extinction}
+Talk about how extinction can change a lot even within the same cluster. Show an example where this happens, where more distant stars have more extinction (we saw one example with Tristan).
+
+\section{Conclusions}
+
+
+\section{Appendix}
+
+
+\vspace*{0.5cm}
+\begin{acknowledgments}
+
+\end{acknowledgments}
+
+%\begin{thebibliography}{99}
+%\end{thebibliography}
+
+\bibliography{article}
+
+
+\end{document}
