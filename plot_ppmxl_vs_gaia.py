@@ -25,8 +25,8 @@ def plot_positions(ppxml_data, gaia_data):
     plt.errorbar(ppxml_data['raj2000'], ppxml_data['dej2000'],
                  xerr=ppxml_data['e_raepRA'], yerr=ppxml_data['e_deepDE'],
                  linestyle='', color='lightblue', marker='', zorder=0)
-    plt.xlabel('ra')
-    plt.ylabel('dec')
+    plt.xlabel('ra (deg)')
+    plt.ylabel('dec (deg)')
 
     # Gaia DR2 (filtering by G <= 19)
     plt.subplot(122)
@@ -35,8 +35,8 @@ def plot_positions(ppxml_data, gaia_data):
     plt.errorbar(gaia_data[0], gaia_data[2],
                  xerr=gaia_data[1] / DEG_TO_MAS, yerr=gaia_data[3] / DEG_TO_MAS,
                  linestyle='', color='lightblue', marker='', zorder=0)
-    plt.xlabel('ra')
-    plt.ylabel('dec')
+    plt.xlabel('ra (deg)')
+    plt.ylabel('dec (deg)')
 
     plt.tight_layout()
 
@@ -55,8 +55,8 @@ def plot_motions(ppxml_data, gaia_data):
     plt.errorbar(ppxml_data['pmRA'], ppxml_data['pmDE'],
                  xerr=ppxml_data['e_pmRA'], yerr=ppxml_data['e_pmDE'],
                  linestyle='', color='lightblue', marker='', zorder=0)
-    plt.xlabel('pmra')
-    plt.ylabel('pmdec')
+    plt.xlabel('pmra (deg/yr)')
+    plt.ylabel('pmdec (deg/yr)')
     plt.xlim(-0.00001, 0.00001)
     plt.ylim(-0.00001, 0.00001)
 
@@ -67,8 +67,8 @@ def plot_motions(ppxml_data, gaia_data):
     plt.errorbar(gaia_data[4] / DEG_TO_MAS, gaia_data[6] / DEG_TO_MAS,
                  xerr=gaia_data[5] / DEG_TO_MAS, yerr=gaia_data[7] / DEG_TO_MAS,
                  linestyle='', color='lightblue', marker='', zorder=0)
-    plt.xlabel('pmra')
-    plt.ylabel('pmdec')
+    plt.xlabel('pmra (deg/yr)')
+    plt.ylabel('pmdec (deg/yr)')
     plt.xlim(-0.00001, 0.00001)
     plt.ylim(-0.00001, 0.00001)
 
