@@ -37,26 +37,39 @@ Open clusters are groups of stars formed from the same molecular cloud simultane
 
 With the new release of data from Gaia, we can study open clusters with more precision than ever before. This data includes positions in the sky, proper motions, parallaxes, and magnitudes in three different photometric filters for over 1 billion stars.
 
-In this article we attempt to verify the existence of some open clusters previously identified from less precise sources using the data from Gaia, and also estimate the age and the interstellar extinction of some of the open clusters via isochrone fitting.
-
-\section{The Gaia DR2 catalogue}
-The second release of data from Gaia\cite{gaiadr2} introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for a total of $1 692 919 135$ sources. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
-
-For bright stars ($G < 15$) the uncertainty in the positions and parallax is about $0.02-0.04\ \si{mas}$, and the uncertainty in the proper motions is about $0.07 \si{mas.yr^{-1}}$. We will only be working with stars of at most $G = 17$, for which the uncertainty in the positions and parallax is of $0.1 \si{mas}$ and of $0.2 \si{mas.yr^{-1}}$ in the proper motions.
-
-The catalogue also lists valuable information on the photometry of most of its sources on the $G$, $G_{BP}$ and $G_{RP}$ photometric passbands. This information will be very useful when determining the age of the clusters we will study, by using a colour-magnitude diagram.
-
-\section{Identifying open clusters}
 Using the data from the UCAC4 catalogue, Sampedro et al.\cite{sampedro} reported the existence of 1876 open clusters, using three different membership methods. With the release of the Gaia DR2 catalogue, which contains more precise stellar data, it is now possible to find and verify the existence of clusters more accurately. We are interested in verifying the existence of some of the clusters found in the study using this data.
 
 There have already been attempts to identify open clusters using the Gaia DR2 catalogue, for instance, in the study of Cantat-Gaudin et al.\cite{cantat-gaudin}, 1269 clusters have been identified with the new data. Our first goal will be to crossmatch the data from both studies to find the clusters that haven't already been verified.
 
-\subsection{Crossmatching data}
+We will also estimate the age and the interstellar extinction of some of the open clusters via isochrone fitting.
+
+\section{The Gaia DR2 catalogue}
+The second release of data from Gaia, the Gaia DR2 catalogue\cite{gaiadr2}, introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for a total of $1 692 919 135$ sources. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
+
+For bright stars ($G < 15$) the uncertainty in the positions and parallax is about $0.02-0.04\ \si{mas}$, and the uncertainty in the proper motions is about $0.07\ \si{mas.yr^{-1}}$. We will only be working with stars of at most $G = 17$, for which the uncertainty in the positions and parallax is of $0.1\ \si{mas}$ and of $0.2\ \si{mas.yr^{-1}}$ in the proper motions. Figure \ref{ppmxl_vs_gaiadr2} illustrates how this data is much more precise than what was available before, by comparing the proper motions of a well known cluster with the data from the PPMXL catalogue and Gaia DR2.
+
+The catalogue also lists valuable information on the photometry of most of its sources on the $G$, $G_{BP}$ and $G_{RP}$ photometric passbands. This information will be very useful when determining the age of the clusters we will study, by using a colour-magnitude diagram.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.45]{ppmxl_vs_gaia_motions}
+\caption{Comparison of the data from PPMXL and Gaia DR2 for the proper motions of the cluster Ivanov 2 \cite{ivanov}.} %TODO add cite to bibliography
+\label{ppmxl_vs_gaiadr2}
+\end{figure}
+
+\section{Identifying open clusters}
 As a first measure to reduce the number of clusters that need to be verified, we will only check the clusters whose name is not present in the data from both studies. We end up with a list of 890 clusters, due mainly to naming inconsistencies and to the new study possibly missing some clusters found by the old one.
 
-For each of these 890 clusters, we compute the mean right ascension and declination, which we will use as the center point of a circle with radius $\dfrac{\max(D) - \min(D)}{2}$ where $D$ is the set of declinations of each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G$ such that $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are supposedly part of the open cluster.
+For each of these 890 clusters, we compute the mean right ascension and declination, which we will use as the center point of a circle with radius $\dfrac{\max(D) - \min(D)}{2}$ where $D$ is the set of declinations of each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are supposedly part of the open cluster. To detect and filter the repeated cases due to name inconsistencies, the center positions of the already verified clusters are also added in the position plots.
 
+Figure \ref{crossmatched_data} shows one example of the plots that were made for each of the clusters, for one of the cases that are confirmed to be a cluster and that will be studied in the next section to determine its age and interstellar extinction.
 
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{NGC_2126_crossmatch}
+\caption{Crossmatched data from the candidate cluster NGC 2126. The red dots correspond to stars from the Gaia DR2 catalogue that match to a star from Sampedro's study.}
+\label{crossmatched_data}
+\end{figure}
 
 
 \section{Determining the age and interstellar extinction of the cluster}
