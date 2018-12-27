@@ -69,7 +69,8 @@ def plot_star_data(g, bprp, name):
     Args:
         data_filename: Name of the file with the star data
     """
-    plt.title(name)
+    if name is not None:
+        plt.title(name)
     xmargin, ymargin = 0.1, 0.2
     plt.xlim(np.nanmin(bprp) - xmargin, np.nanmax(bprp) + xmargin)
     plt.ylim(np.nanmax(g) + ymargin, np.nanmin(g) - ymargin)
@@ -78,7 +79,7 @@ def plot_star_data(g, bprp, name):
     plt.minorticks_on()
     plt.tight_layout()
     # Plot the data
-    plt.scatter(bprp, g, color='black')
+    plt.scatter(bprp, g, color='black', marker='.')
 
 
 def main():
@@ -105,7 +106,7 @@ def main():
 
     # Load star data
     filename = args.f.name
-    name = args.name if args.name else os.path.splitext(filename)[0]
+    name = args.name if args.name else None
 
     mean_parallax, g, bprp = load_star_data(filename)
     distance_modulus = compute_distance_modulus(mean_parallax)
