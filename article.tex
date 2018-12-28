@@ -194,24 +194,33 @@ Stock 6 & $[0.45, 0.63]$ & $[1.5, 1.6]$ \\
 \end{table}
 
 \section{Problems when fitting isochrones}
-\subsection{Blue stragglers}
-Talk about blue stragglers, show some plots where they clearly appear...
+\subsection{Unresolved binary stars}
+Many stellar systems are binary stars, systems formed by two stars orbiting each other. If they are distant, some these systems may be unresolved and seen as a single object. In a HRD, unresolved binary stars would appear as a secondary line in the main sequence which is brighter than the rest. A clear example of this can be seen in Figure \ref{nice-isochrone}. This can make the main sequence line in the HRD appear wider than it actually is, and can be a problem when fitting isochrones.
 
-\subsection{Binary sequences}
-Talk about binary sequences due to binary stars.
+To avoid this problem, when we find a wide main sequence line, we try to fit the isochrone near the less luminous stars, which should be single star systems.
 
 \subsection{Differential extinction}
-Talk about how extinction can change a lot even within the same cluster. Show an example where this happens, where more distant stars have more extinction (we saw one example with Tristan).
+In this work, the reddening due to the interstellar extinction had a fixed value and was included in the isochrones used to estimate the parameters of the clusters. However, in some cases, like for instance Stock 6, the extinction is not the same for all stars in the cluster. In the case of Stock 6, more distant stars appeared to have significantly more extinction, and this makes the stars appear more scattered in the HRD, making the fitting harder. TO avoid this problem, we would have to estimate the extinction for each star individually, and apply the corrections on each of the stars, instead of applying a global extinction for all the stars in the cluster.
+
+\subsection{Blue stragglers}
+Blue stragglers are stars in open clusters that appear to be brighter and bluer than the stars at the turnoff point in the HRD. They can make the turnoff point unclear, especially if we also have other effects which make the plots less clear, like the ones discussed previously.
 
 \section{Conclusions}
-
+We have identified various open clusters listed in other studies, but with the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have estimated their ages and total interstellar extinction, with our results shown in Table \ref{tab:fitting-results}, explaining in detail the methodology used.
 
 \section{Appendix}
-
+Throughout this work, we mention the interstellar extinction and its reddening effect without getting into the details of what it is. Interstellar extinction is an effect produced by dust clouds, which absorb and scatter light. This extinction, however, is selective, meaning that light of different wavelengths is affected differently. In general, extinction is stronger at shorter wavelengths, which causes a reddening of the light. We can define the total extinction at a certain wavelength $\lambda$, $A_\lambda$, by adding a term in equation \ref{distance-modulus},
+\begin{equation}
+m_\lambda - M_\lambda = 5 \log_{10} \left( \frac{d}{10} \right) + A_\lambda
+\end{equation}
+which is defined as the total extinction for the visual photometric band $V$, $A_V$. The reddening effect due to the extinction is then defined as
+\begin{equation}
+E_{B-V} = A_B - A_V
+\end{equation}
 
 \vspace*{0.5cm}
 \begin{acknowledgments}
-
+I would like to thank my advisor Tristan Cantat-Gaudin, who guided me through the process of this work and provided very useful knowledge. I would also like to thank Miriam for her support during all these years.
 \end{acknowledgments}
 
 
