@@ -67,7 +67,7 @@ For each of these 890 clusters, we compute the mean right ascension $\alpha$ and
 \begin{figure*}
 \centering
 \includegraphics[scale=0.5]{NGC_2126_crossmatch}
-\caption{Crossmatched data from the candidate cluster NGC 2126. The red dots correspond to stars from the Gaia DR2 catalogue that match a star from Sampedro's study.}
+\caption{Data from the candidate cluster NGC 2126. The red dots correspond to stars from the Gaia DR2 catalogue that match a star from Sampedro's study.}
 \label{crossmatched_data}
 \end{figure*}
 
@@ -118,9 +118,9 @@ Stock 6 & $(35.93, 63.79)$ & $0.9536$ & $144$ \\
 
 To determine the age and interstellar extinction of the clusters, we make use of the stellar evolution model. Stars enter the main sequence soon after their birth, where they stay most of their life burning hydrogen. When their hydrogen cores deplete, they leave the main sequence and start burning the helium in their core resulting from the fusion of hydrogen atoms. When this happens, the stars maintain a similar brightness, but become much redder in color. The brighter a star is, the faster it will burn through its hydrogen core and leave the main sequence.
 
-If we represent the stars in an open cluster in a Hertzsprung–Russell diagram (HRD), one can see the brightness at which the stars are starting to leave the main sequence. This is called the turnoff point, and it can be used to estimate the age of the cluster.
+If we represent the stars in an open cluster in a colour-magnitude diagram (CMD), one can see the brightness at which the stars are starting to leave the main sequence. This is called the turnoff point, and it can be used to estimate the age of the cluster.
 
-To be able to represent the data from Gaia in a HRD, we need to use the distance modulus to shift from apparent to absolute magnitude, and we also need to take into account the interstellar extinction, which makes the stars appear redder and less bright than what they actually are.
+To be able to represent the data from Gaia in a CMD, we need to use the distance modulus to shift from apparent to absolute magnitude, and we also need to take into account the interstellar extinction, which makes the stars appear redder and less bright than what they actually are.
 
 %%%%%%%%%% Maybe do distance modulus derivation in an appendix?
 Let $M$ be the absolute magnitude, and $m$ the apparent magnitude without any corrections due to the interstellar reddening. Then, the distance modulus is just $\mu = m - M$. Since we don't have the absolute magnitude, we need to relate this to the distance of the stars in the cluster, which is given by the parallax.
@@ -143,13 +143,13 @@ where $d$ is in parsecs. We can use equation \ref{distance-modulus} with the dat
 
 Given that the stars in an open cluster are relatively close together, we shift every star in the plot by the distance modulus of the mean parallax of the cluster. Now that we are working in the absolute magnitude space, with the exception of the reddening due to the interstellar extinction , we can begin the process of isochrone fitting.
 
-An isochrone is the line that would be drawn in a HRD if we varied the mass of the star at a fixed age. Since the stars in an open cluster have the same age, we can find an isochrone that fits the HRD of the stars in the cluster to determine its age.
+An isochrone is the line that would be drawn in a CMD if we varied the mass of the star at a fixed age. Since the stars in an open cluster have the same age, we can find an isochrone that fits the CMD of the stars in the cluster to determine its age.
 The isochrones used are from the PARSEC\cite{parsec}, with the photometric system from Gaia DR2\cite{gaiadr2}, and including the interstellar extinction $A_V$ on a star-to-star basis\cite{girardi}. The metallicity value used for the isochrones is $Z = 0.0152$.  An example of the result of fitting an isochrone to the cluster data can be seen in Figure \ref{nice-isochrone}.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.65]{NGC_752}
-\caption{HRD of the cluster NGC 752, with an isochrone of age $1.78 \si{Gyr}$ and $A_V = 0.1$, with a shift in total magnitude given by the mean distance modulus $\bar{\mu} = 8.264$.}
+\caption{CMD of the cluster NGC 752, with an isochrone of age $1.78 \si{Gyr}$ and $A_V = 0.1$, with a shift in total magnitude given by the mean distance modulus $\bar{\mu} = 8.264$.}
 \label{nice-isochrone}
 \end{figure}
 
@@ -195,15 +195,15 @@ Stock 6 & $[0.45, 0.63]$ & $[1.5, 1.6]$ \\
 
 \section{Problems when fitting isochrones}
 \subsection{Unresolved binary stars}
-Many stellar systems are binary stars, systems formed by two stars orbiting each other. If they are distant, some these systems may be unresolved and seen as a single object. In a HRD, unresolved binary stars would appear as a secondary line in the main sequence which is brighter than the rest. A clear example of this can be seen in Figure \ref{nice-isochrone}. This can make the main sequence line in the HRD appear wider than it actually is, and can be a problem when fitting isochrones.
+Many stellar systems are binary stars, systems formed by two stars orbiting each other. If they are distant, some these systems may be unresolved and seen as a single object. In a CMD, unresolved binary stars would appear as a secondary line in the main sequence which is brighter than the rest. A clear example of this can be seen in Figure \ref{nice-isochrone}. This can make the main sequence line in the CMD appear wider than it actually is, and can be a problem when fitting isochrones.
 
 To avoid this problem, when we find a wide main sequence line, we try to fit the isochrone near the less luminous stars, which should be single star systems.
 
 \subsection{Differential extinction}
-In this work, the reddening due to the interstellar extinction had a fixed value and was included in the isochrones used to estimate the parameters of the clusters. However, in some cases, like for instance Stock 6, the extinction is not the same for all stars in the cluster. In the case of Stock 6, more distant stars appeared to have significantly more extinction, and this makes the stars appear more scattered in the HRD, making the fitting harder. TO avoid this problem, we would have to estimate the extinction for each star individually, and apply the corrections on each of the stars, instead of applying a global extinction for all the stars in the cluster.
+In this work, the reddening due to the interstellar extinction had a fixed value and was included in the isochrones used to estimate the parameters of the clusters. However, in some cases, like for instance Stock 6, the extinction is not the same for all stars in the cluster. In the case of Stock 6, more distant stars appeared to have significantly more extinction, and this makes the stars appear more scattered in the CMD, making the fitting harder. TO avoid this problem, we would have to estimate the extinction for each star individually, and apply the corrections on each of the stars, instead of applying a global extinction for all the stars in the cluster.
 
 \subsection{Blue stragglers}
-Blue stragglers are stars in open clusters that appear to be brighter and bluer than the stars at the turnoff point in the HRD. They can make the turnoff point unclear, especially if we also have other effects which make the plots less clear, like the ones discussed previously.
+Blue stragglers are stars in open clusters that appear to be brighter and bluer than the stars at the turnoff point in the CMD. They can make the turnoff point unclear, especially if we also have other effects which make the plots less clear, like the ones discussed previously.
 
 \section{Conclusions}
 We have identified various open clusters listed in other studies, but with the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have estimated their ages and total interstellar extinction, with our results shown in Table \ref{tab:fitting-results}, explaining in detail the methodology used.
