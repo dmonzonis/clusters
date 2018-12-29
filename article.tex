@@ -6,7 +6,6 @@
 \usepackage{fancyhdr}
 \usepackage{siunitx}
 
-
 \begin{document}
 
 \pagestyle{fancy}
@@ -24,7 +23,7 @@
 %\date{\today}
 
 \begin{abstract}
-{\bf Abstract:} The aim of this work is to study several open clusters that have been previously identified, but using the newer and more precise data from the Gaia DR2 catalogue, trying to verify their existence, and determine an approximation of their age and the amount of interstellar extinction.
+{\bf Abstract:} The aim of this work is to study several open clusters previously identified in other studies, but using the newer and more precise data from the Gaia DR2 catalogue, trying to verify their existence and use the photometry included in the catalogue to estimate their age and the total interstellar extinction.
 \end{abstract}
 
 \maketitle
@@ -32,20 +31,18 @@
 \section{Introduction}
 Open clusters are groups of stars formed from the same molecular cloud simultaneously, and therefore the stars in the cluster share many properties like age, position, proper motion and composition. Because of this, many of these properties can be estimated much more easily from a cluster than from a single star. This information can then be used to trace the structure of the Milky Way, and makes open clusters very interesting for studying stellar evolution and stellar structure, since the only parameter that varies is the mass of each star.
 
-Over 1200 open clusters have been identified within the Milky Way, but it is thought that there exist around $10^5$ open clusters in the galaxy, since most open clusters form near the galactic plane, where the interstellar extinction is higher due to the higher amount of dust, making their observation much harder.\cite{star-clusters}
+Over 1200 open clusters have been identified within the Milky Way, but it is thought that there exist around $10^5$ open clusters in the galaxy, since most open clusters form near the galactic plane, where the interstellar extinction is higher due to the higher amount of dust, making their observation much harder \cite{star-clusters}.
 
 With the new release of data from Gaia, we can study open clusters with more precision than ever before. This data includes positions in the sky, proper motions, parallaxes, and magnitudes in three different photometric filters for over 1 billion stars.
 
-Using the data from the UCAC4 catalogue, Sampedro et al.\cite{sampedro} reported the existence of 1876 open clusters, using three different membership methods. With the release of the Gaia DR2 catalogue, which contains more precise astrometric data, it is now possible to find and verify the existence of clusters more accurately.
-There have already been attempts to identify open clusters using the Gaia DR2 catalogue, for instance, in the study of Cantat-Gaudin et al.\cite{cantat-gaudin}, 1269 clusters have been identified with the new data. Our first goal will be to crossmatch the data from both studies to find the clusters that haven't already been verified.
-
-In this work, we will study some open clusters from both articles, focusing on clusters found in Sampedro's article but that have not been yet verified with the data from Gaia. We will also find estimates for the age and interstellar extinction of these clusters.
+Using the data from the UCAC4 catalogue, Sampedro et al. reported the existence of 1876 open clusters, using three different membership methods \cite{sampedro}. With the release of the Gaia DR2 catalogue, which contains more precise astrometric data, it is now possible to find and verify the existence of clusters more accurately.
+There have already been attempts to identify open clusters using the Gaia DR2 catalogue, for instance, in the study of Cantat-Gaudin et al., 1269 clusters were identified with the new data \cite{cantat-gaudin}. Our first goal will be to crossmatch the data from both studies to find the clusters that haven't already been verified.
 
 
 \section{The Gaia DR2 catalogue}
-The second release of data from Gaia, the Gaia DR2 catalogue\cite{gaiadr2}, introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for a total of $1 692 919 135$ sources. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
+The second release of data from Gaia, in the form of the Gaia DR2 catalogue, introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for a total of $1 692 919 135$ sources \cite{gaiadr2}. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
 
-For bright stars ($G < 15$) the uncertainty in the positions and parallax is about $0.02-0.04\ \si{mas}$, and the uncertainty in the proper motions is about $0.07\ \si{mas.yr^{-1}}$. We will only be working with stars of at most $G = 17$, for which the uncertainty in the positions and parallax is of $0.1\ \si{mas}$ and of $0.2\ \si{mas.yr^{-1}}$ in the proper motions. Figure \ref{ppmxl_vs_gaiadr2} illustrates how this data is much more precise than what was available before, by comparing the proper motions of a well known cluster with the data from the PPMXL catalogue\cite{ppmxl} and Gaia DR2.
+For bright stars ($G < 15$) the uncertainty in the positions and parallax is about $0.02-0.04\ \si{mas}$, and the uncertainty in the proper motions is about $0.07\ \si{mas.yr^{-1}}$. We will only be working with stars of at most $G = 17$, for which the uncertainty in the positions and parallax is of $0.1\ \si{mas}$ and of $0.2\ \si{mas.yr^{-1}}$ in the proper motions. Figure \ref{ppmxl_vs_gaiadr2} illustrates the improvement in precision of the astrometric parameters, by comparing the proper motions of a well known cluster with the data from the PPMXL catalogue \cite{ppmxl} and Gaia DR2.
 
 \begin{figure}[h!]
 \centering
@@ -54,15 +51,13 @@ For bright stars ($G < 15$) the uncertainty in the positions and parallax is abo
 \label{ppmxl_vs_gaiadr2}
 \end{figure}
 
-
-The catalogue also lists valuable information on the photometry of most of its sources on the $G$, $G_{BP}$ and $G_{RP}$ photometric passbands. This information will be very useful when determining the age of the clusters we will study, by using a colour-magnitude diagram.
-
+The catalogue also lists valuable information on the photometry of most of its sources on the $G$, $G_{BP}$ and $G_{RP}$ photometric passbands.
 
 \section{Identifying open clusters}
 
-As a first measure to reduce the number of clusters that need to be verified, we will only check the clusters whose name is not present in the data from both studies. We end up with a list of 890 clusters, due mainly to naming inconsistencies and to the new study possibly missing some clusters found by the old one.
+As a first measure to reduce the number of clusters that need to be verified, we will only check the clusters whose name is not present in the data from both studies. By applying said filter, we end up with a list of 890 clusters, slightly more than expected, due mainly to naming inconsistencies and possibly to one study having found some clusters that the other has not.
 
-For each of these 890 clusters, we compute the mean right ascension $\alpha$ and declination $\delta$, which we will use as the center point of a circle with radius $\dfrac{\max(D) - \min(D)}{2}$ where $D$ is the set of declinations for all the stars of each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are supposedly part of the open cluster. To detect and filter the repeated cases due to name inconsistencies, the center positions of the already verified clusters are also added in the position plots.
+For each of these 890 clusters, we compute the mean right ascension $\alpha$ and declination $\delta$, which we will use as the center point of a circle with radius $\dfrac{\max(D) - \min(D)}{2}$ where $D$ is the set of declinations for all the stars of each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are listed in Sampedro's study as being part of the cluster. To filter out the repeated cases due to naming inconsistencies, the center positions of the already verified clusters are also added in the position plots.
 
 \begin{figure*}
 \centering
@@ -75,7 +70,8 @@ Figure \ref{crossmatched_data} shows one example of the plots that were made for
 
 
 \section{Determining the age and interstellar extinction of the cluster}
-In this section we discuss the procedure followed to determine an approximation of the age and interstellar extinction of some clusters. We try this method for a total of 14 clusters, some of which are taken from the list of verified clusters in the study of Cantat-Gaudin, and the rest are cases from the study of Sampedro which we have verified in the previous section. The complete list of tested clusters, as well as some data on them, can be found in Table \ref{tab:clusters}. %TODO comment on the method used to get the members of the cluster
+In this section we discuss the procedure followed to determine an approximation of the age and interstellar extinction of some clusters. We try this method for a total of 14 clusters, some of which are taken from the list of verified clusters in the study of Cantat-Gaudin, and the rest are cases from the study of Sampedro which we have verified in the previous section. The complete list of tested clusters can be found in Table \ref{tab:clusters}, along with some parameters.
+%TODO comment on the method used to get the members of the cluster
 Note that a lower parallax means a greater distance.
 
 \begin{table}[h!]
@@ -112,22 +108,23 @@ Ruprecth 8 & $(105.41, -13.56)$ & $0.4278$ & $138$ \\
 Stock 6 & $(35.93, 63.79)$ & $0.9536$ & $144$ \\
 \hline
 \end{tabular}
-\caption{List of clusters that have been studied, and their mean position (given in ($\alpha$, $\delta$)) and mean parallax, computed using the data from Gaia DR2, and the number of member stars of the cluster.} %TODO mention method name
+\caption{List of clusters that have been studied, including their mean position (given in ($\alpha$, $\delta$)) and mean parallax, computed using the data from Gaia DR2, and the number of member stars of the cluster.} %TODO mention method name
 \label{tab:clusters}
 \end{table}
 
-To determine the age and interstellar extinction of the clusters, we make use of the stellar evolution model. Stars enter the main sequence soon after their birth, where they stay most of their life burning hydrogen. When their hydrogen cores deplete, they leave the main sequence and start burning the helium in their core resulting from the fusion of hydrogen atoms. When this happens, the stars maintain a similar brightness, but become much redder in color. The brighter a star is, the faster it will burn through its hydrogen core and leave the main sequence.
+To determine the age and interstellar extinction of the clusters, we make use of the theoretical stellar evolution model. Stars enter the main sequence soon after their birth, where they stay most of their life burning hydrogen. When their hydrogen cores deplete, they leave the main sequence and start burning the helium in their core resulting from the fusion of hydrogen atoms. When this happens, the stars maintain a similar brightness, but become much redder in color. The brighter a star is, the faster it will burn through its hydrogen core and leave the main sequence.
 
 If we represent the stars in an open cluster in a colour-magnitude diagram (CMD), one can see the brightness at which the stars are starting to leave the main sequence. This is called the turnoff point, and it can be used to estimate the age of the cluster.
 
-To be able to represent the data from Gaia in a CMD, we need to use the distance modulus to shift from apparent to absolute magnitude, and we also need to take into account the interstellar extinction, which makes the stars appear redder and less bright than what they actually are.
+To be able to represent the data from Gaia in a CMD, we need to shift from apparent to absolute magnitude, and we also need to take into account the interstellar extinction, which makes the stars appear redder and less bright than what they actually are.
 
 %%%%%%%%%% Maybe do distance modulus derivation in an appendix?
-Let $M$ be the absolute magnitude, and $m$ the apparent magnitude without any corrections due to the interstellar reddening. Then, the distance modulus is just $\mu = m - M$. Since we don't have the absolute magnitude, we need to relate this to the distance of the stars in the cluster, which is given by the parallax.
+Let $M$ be the absolute magnitude, and $m$ the apparent magnitude without any corrections due to the interstellar reddening. Then, we define the distance modulus as $\mu = m - M$. Since we don't have the absolute magnitude, we need to relate this to the distance of the stars in the cluster, which is given by the parallax.
 
 Remember that
 \[m = -2.5 \log_{10} \left( \frac{F(d)}{F_0} \right) \]
-where $F$ is the observed flux density of the star, and $F_0$ is the reference flux. %TODO complete this
+where $F$ is the observed flux density of the star, and $F_0$ is the reference flux.
+%TODO complete this
 The absolute magnitude $M$ is the apparent magnitude of the star if it was placed at a distance of $10$ parsecs. The flux $F$ and luminosity $L$ of a star are related by the distance to the star $d$ by
 \[F = \frac{L}{4 \pi d^2}\]
 and since the luminosity is an intrinsic property of a star, we find the relation
@@ -141,10 +138,9 @@ Then, using this relation in the expression $m - M = -2.5 \log_{10} \left( \frac
 \end{equation}
 where $d$ is in parsecs. We can use equation \ref{distance-modulus} with the data from Gaia, since the relation between the parallax $p$ given in arcseconds and the distance $d$ given in parsecs is just $d = p^{-1}$.
 
-Given that the stars in an open cluster are relatively close together, we shift every star in the plot by the distance modulus of the mean parallax of the cluster. Now that we are working in the absolute magnitude space, with the exception of the reddening due to the interstellar extinction , we can begin the process of isochrone fitting.
+Given that the stars in an open cluster are relatively close together, we shift every star in the plot by the distance modulus of the mean parallax of the cluster. We chose this approach instead of using shifting each star by its individual distance modulus because for more distant stars the error in the parallax is higher, so there might be a lot of discrepancy between the parallaxes of some of the stars in the cluster and the CMD would be less clear. Another option would have been to treat the distance modulus as a third parameter to estimate via isochrone fitting, which would also avoid this problem but would make the process harder.
 
-An isochrone is the line that would be drawn in a CMD if we varied the mass of the star at a fixed age. Since the stars in an open cluster have the same age, we can find an isochrone that fits the CMD of the stars in the cluster to determine its age.
-The isochrones used are from the PARSEC\cite{parsec}, with the photometric system from Gaia DR2\cite{gaiadr2}, and including the interstellar extinction $A_V$ on a star-to-star basis\cite{girardi}. The metallicity value used for the isochrones is $Z = 0.0152$.  An example of the result of fitting an isochrone to the cluster data can be seen in Figure \ref{nice-isochrone}.
+An isochrone is the line that would be drawn in a CMD if we varied the mass of the star at a fixed age. Since the stars in an open cluster have the same age, we can find an isochrone that fits the CMD of the stars in the cluster to determine its age. The isochrones used are from PARSEC \cite{parsec}, with the photometric system from Gaia DR2, and including the interstellar extinction $A_V$ on a star-to-star basis \cite{girardi}. The metallicity value used for the isochrones is $Z = 0.0152$. An example of the result of fitting an isochrone to the cluster data can be seen in Figure \ref{nice-isochrone}.
 
 \begin{figure}[h!]
 \centering
@@ -203,10 +199,22 @@ To avoid this problem, when we find a wide main sequence line, we try to fit the
 In this work, the reddening due to the interstellar extinction had a fixed value and was included in the isochrones used to estimate the parameters of the clusters. However, in some cases, like for instance Stock 6, the extinction is not the same for all stars in the cluster. In the case of Stock 6, more distant stars appeared to have significantly more extinction, and this makes the stars appear more scattered in the CMD, making the fitting harder. TO avoid this problem, we would have to estimate the extinction for each star individually, and apply the corrections on each of the stars, instead of applying a global extinction for all the stars in the cluster.
 
 \subsection{Blue stragglers}
-Blue stragglers are stars in open clusters that appear to be brighter and bluer than the stars at the turnoff point in the CMD. They can make the turnoff point unclear, especially if we also have other effects which make the plots less clear, like the ones discussed previously.
+Blue stragglers are stars in open clusters that appear to be brighter and bluer than the stars at the turnoff point in the CMD. They can make the turnoff point unclear, especially if we also have other effects which make the plots less clear, like the ones discussed previously. In Figure \ref{blue-stragglers} we can see some stars which are likely to be blue stragglers, and add uncertainty to the location of the turnoff point.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.55]{berkeley-example}
+\caption{CMD of the cluster Berkeley 100 with various isochrones, and $A_V = 3.2$, with a shift in total magnitude given by the mean distance modulus $\bar{\mu} = 14.177$.}
+\label{blue-stragglers}
+\end{figure}
+
+The reason as to why blue stragglers exist is still not well known, but one plausible theory is that they are formed from binary stars, in which one of the stars merges with the other by transferring its mass \cite{stragglers}.
+
 
 \section{Conclusions}
-We have identified various open clusters listed in other studies, but with the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have estimated their ages and total interstellar extinction, with our results shown in Table \ref{tab:fitting-results}, explaining in detail the methodology used.
+We have identified various open clusters listed in other studies, but with the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have also estimated their ages and total interstellar extinction, while explaining in detail the methodology followed to do so. As we have seen, the shape of the CMDs strongly resembles the isochrones made by the theoretical models of stellar evolution. Even then, we detected some phenomena which still does not have an ubiquitous explanation, for instance, the existence of blue stragglers in open clusters.
+
+Distant clusters have generally been harder to study, for the various reasons we have explained throughout this work, but mainly due to the error in the astrometric and photometric parameters. But being able to study these clusters with this much precision is unprecedented before the release of the data from Gaia. This will allow future works to study many open clusters in more detail than ever before, and with the results we can get an idea of the structure of the galaxy.
 
 \section{Appendix}
 Throughout this work, we mention the interstellar extinction and its reddening effect without getting into the details of what it is. Interstellar extinction is an effect produced by dust clouds, which absorb and scatter light. This extinction, however, is selective, meaning that light of different wavelengths is affected differently. In general, extinction is stronger at shorter wavelengths, which causes a reddening of the light. We can define the total extinction at a certain wavelength $\lambda$, $A_\lambda$, by adding a term in equation \ref{distance-modulus},
@@ -241,6 +249,8 @@ I would like to thank my advisor Tristan Cantat-Gaudin, who guided me through th
 \bibitem{parsec} A. Bressan, P. Marigo, L. Girardi, B. Salasnich, C. Dal Cero, S. Rubele, and A. Nanni, (2012), arXiv:1208.4498 [astro-ph.SR]
 
 \bibitem{girardi} L. Girardi, J. Dalcanton, B. Williams, et al., (2008), arXiv:0804.0498 [astro-ph]
+
+\bibitem{stragglers} Aaron M. Geller, Robert D. Mathieu, (2011), arXiv:1110.3793 [astro-ph.SR]
 
 
 \end{thebibliography}
