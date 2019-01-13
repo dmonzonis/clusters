@@ -58,8 +58,8 @@ def plot_motions(ppxml_data, gaia_data):
                  linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('pmra (mas/yr)')
     plt.ylabel('pmdec (mas/yr)')
-    plt.xlim(-50, 50)
-    plt.ylim(-50, 50)
+    plt.xlim(-15, 15)
+    plt.ylim(-15, 15)
 
     # Gaia DR2
     plt.subplot(212)
@@ -69,8 +69,8 @@ def plot_motions(ppxml_data, gaia_data):
                  linestyle='', color='lightblue', marker='', zorder=0)
     plt.xlabel('pmra (mas/yr)')
     plt.ylabel('pmdec (mas/yr)')
-    plt.xlim(-50, 50)
-    plt.ylim(-50, 50)
+    plt.xlim(-15, 15)
+    plt.ylim(-15, 15)
 
     plt.tight_layout()
 
@@ -80,7 +80,7 @@ def plot_motions(ppxml_data, gaia_data):
 
 def main():
     ppxml_data, gaia_data = load_data()
-    plot_positions(ppxml_data, gaia_data)
+    #  plot_positions(ppxml_data, gaia_data)
     plot_motions(ppxml_data, gaia_data)
 
 
