@@ -38,7 +38,7 @@ With the new release of data from Gaia, we can study open clusters with more pre
 Using the data from the UCAC4 catalogue, Sampedro et al. reported the existence of 1876 open clusters, using three different membership methods \cite{sampedro}. With the release of the Gaia DR2 catalogue, which contains more precise astrometric data, it is now possible to find and verify the existence of clusters more accurately.
 There have already been attempts to identify open clusters using the Gaia DR2 catalogue, for instance, in the study of Cantat-Gaudin et al., 1229 clusters were identified with the new data \cite{cantat-gaudin}.
 
-As a first step, we will crossmatch the data from both studies to find the clusters that haven't already been verified. We will then use Gaia's data to find some cases from the list which are clearly clusters. Finally, we will estimate the age and total interstellar extinction of these clusters.
+As a first step, we will crossmatch the data from both studies to find the clusters that haven't already been verified. We will then use the data from Gaia to find some cases from the list which are clearly clusters. Finally, we will estimate the age and total interstellar extinction of these clusters.
 
 \section{The Gaia DR2 catalogue}
 The second release of data from Gaia, in the form of the Gaia DR2 catalogue, introduces high-precision measurements of various astrometry parameters, like proper motions and parallaxes, as well as photometric information for about 1.7 billion sources \cite{gaiadr2}. The catalogue contains a 5-parameter astrometric solution for over 1.3 billion stars, which include the position in the sky given by the right ascension and declination, the proper motion and the parallax. For the rest of the stars, which are the very faint ones ($G > 21$), a 2-parameter astrometric solution is given instead, with only the positions in the sky.
@@ -48,7 +48,7 @@ For bright stars ($G < 15$) the uncertainty in the positions and parallax is abo
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.45]{ppmxl_vs_gaia_motions}
-\caption{Comparison of the data from PPMXL and Gaia DR2 for the proper motions of the cluster Ivanov 2 \cite{ivanov}. We can see that the proper motions also look more compact with Gaia's data, confirming that it is in fact an open cluster.}
+\caption{Comparison of the data from PPMXL and Gaia DR2 for the proper motions of the cluster Ivanov 2 \cite{ivanov}. We can see that the proper motions also look more compact with the data from Gaia, confirming that it is in fact an open cluster.}
 \label{ppmxl_vs_gaiadr2}
 \end{figure}
 
@@ -58,21 +58,23 @@ The catalogue also lists valuable information on the photometry of most of its s
 
 As a first measure to reduce the number of clusters that need to be verified, we will only check the clusters whose name is not present in the data from both studies. By applying said filter, we end up with a list of 890 clusters, which more than the 647 we expected, due mainly to naming inconsistencies and possibly to one study having found some clusters that the other has not. However, our main focus will be the 647 clusters that Sampedro found with the less precise data from UCAC4.
 
-For each of these 890 clusters, we compute the mean right ascension $\alpha$ and declination $\delta$, which we will use as the center point of a circle with radius $\dfrac{\max(\delta) - \min(\delta)}{2}$, where we consider the set of declinations of the stars in each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G = 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are listed in Sampedro's study as being part of the cluster.
+For each of these 890 clusters, we compute the mean right ascension $\alpha$ and declination $\delta$, which we will use as the center point of a circle with radius $\dfrac{\max(\delta) - \min(\delta)}{2}$, where we consider the set of declinations of the stars in each cluster. Then, we query the data from the Gaia DR2 catalogue for the region encompassed by this circle. We get stars with a magnitude $G < 17$, since the data from the UCAC4 catalogue does not show stars fainter than $G \approx 17$. This gives us the data for all the stars in the queried region, so we crossmatch this data with the data from the original study to leave only the stars that are listed in Sampedro's study as being part of the cluster.
 
 \begin{figure*}
 \centering
 \includegraphics[scale=0.5]{NGC_2126_crossmatch}
-\caption{Data from the candidate cluster NGC 2126. The red dots correspond to stars from the Gaia DR2 catalogue that match a star from Sampedro's study.}
+\caption{Data from the candidate cluster NGC 2126. The red dots correspond to stars from the Gaia DR2 catalogue that match a star from Sampedro's study.
+Top left: Plot of the star positions; Top right: Plot of the proper motions; Bottom left: Colour-magnitude diagram; Bottom right: Plot of the parallax against the total magnitude, where we can see a straight vertical line showing that the stars are at the same distance.}
 \label{crossmatched_data}
 \end{figure*}
 
-Figure \ref{crossmatched_data} shows one example of the plots that were made for each of the clusters, for one of the cases that are confirmed to be a cluster and that will be studied in the next section. Note that, in this case, the proper motion space is pretty compact, showing that the stars are moving together, and there is a clear straight line in the parallax versus magnitude plot, showing that the stars are at the same distance. However, it is interesting to note that NGC 2126 does not look like a cluster when observed on the sky. In the color-magnitude diagram, we can see that some stars have already left the main sequence. We will study this in more detail in the following section.
-
+Figure \ref{crossmatched_data} shows one example of the plots that were made for each of the clusters, for the case of NGC 2126, which will be studied in the next section. Note that, in this case, the proper motion space is pretty compact, showing that the stars are moving together, and there is a clear straight line in the parallax versus magnitude plot, showing that the stars are at the same distance.
+Note that if we just look at the position plot of the stars, it is not clear that it is in fact a cluster, as it does not appear as a compact overdensity. However, looking at the proper motion and parallax plots, it becomes clear that the stars are moving together and are at the same distance, confirming that this is in fact a cluster.
+In the color-magnitude diagram, we can see that some stars have already left the main sequence. We will study this in more detail in the following section.
 
 To filter out the repeated cases due to name inconsistencies, the cluster positions from the study of Cantat-Gaudin were also added to the plots, so in the case of a repeated cluster, we would see it near the center in the position plot, which corresponds to the first plot as shown in Figure \ref{crossmatched_data}.
 
-After examining the plots for all 890 clusters, excluding repetitions, we found that only 14 of them were really compact in proper motion, leading us to believe that the rest of them probably are not actually clusters. These clusters are studied further in the next section.
+After examining the plots for all 890 clusters, excluding repetitions, we found that only 14 of them were really compact in proper motion, leading us to believe that the rest of them probably are not actually clusters. These 14 cases confirmed to be clusters are studied further in the next section.
 
 \section{Estimating the age and interstellar extinction of the cluster}
 In this section we discuss the procedure followed to estimate the age and interstellar extinction of some clusters. We applied this method to a total of 14 clusters, some of which are taken from the list of verified clusters in the study of Cantat-Gaudin, and the rest are cases from the study of Sampedro which we have verified in the previous section. The complete list of investigated clusters is given in Table \ref{tab:clusters}, along with some parameters. To obtain the list of probable members, the UPMASK classification method \cite{cantat-gaudin} was applied.
@@ -216,9 +218,9 @@ The reason as to why blue stragglers exist is still not well known, but one plau
 
 
 \section{Conclusions}
-We have identified various open clusters listed in other studies, but with the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have also estimated their ages and total interstellar extinction, while explaining in detail the methodology followed to do so. As we have seen, the shape of the CMDs strongly resembles the isochrones made by the theoretical models of stellar evolution. Even then, we detected some phenomena which still does not have an ubiquitous explanation, for instance, the existence of blue stragglers in open clusters.
+We have identified various open clusters listed in other studies, using the more recent and precise data from the Gaia DR2 catalogue. For some of these clusters, we have also estimated their ages and total interstellar extinction, while explaining in detail the methodology followed to do so, using the isochrones made from the theoretical models of stellar evolution.
 
-Distant clusters have generally been harder to study, for the various reasons we have explained throughout this work, but mainly due to the error in the astrometric and photometric parameters. But being able to study these clusters with this much precision is unprecedented before the release of the data from Gaia. This will allow future works to study many open clusters in more detail than ever before, and with the results we can get an idea of the structure of the galaxy.
+Distant clusters have generally been harder to study for various reasons, mainly due to the error in the astrometric and photometric parameters. However, these errors are still much lower than what we had before, so the Gaia data has allowed us to characterise them in greater detail. This will allow future works to study many open clusters for which there was not precise enough data before, and to further our understanding of the stellar content of the galaxy.
 
 \section{Appendix}
 Throughout this work, we mention the interstellar extinction and its reddening effect without getting into the details of what it is. Interstellar extinction is an effect produced by dust clouds, which absorb and scatter light. This extinction, however, is selective, meaning that light of different wavelengths is affected differently. In general, extinction is stronger at shorter wavelengths, which causes a reddening of the light. We can define the total extinction at a certain wavelength $\lambda$, $A_\lambda$, by adding a term in equation \ref{distance-modulus},
